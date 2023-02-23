@@ -11,6 +11,11 @@ const list = document.querySelector<HTMLUListElement>("#list")
 const form = document.querySelector<HTMLFormElement>("#new-task")
 const input = document.querySelector<HTMLInputElement>("#task-title")
 
+const tasks: Task[] = loadTasks()
+
+tasks.forEach(addListItem)
+
+
 
 form?.addEventListener("submit", e =>{
   e.preventDefault()
@@ -23,7 +28,11 @@ form?.addEventListener("submit", e =>{
     completed: false,
     createdAt:new Date(),
   }
+  tasks.push(newTask)
+
   addListItem(newTask)
+
+  input.value = ""
 
 })
 function addListItem(task: Task){
@@ -32,8 +41,11 @@ function addListItem(task: Task){
   const label = document.createElement("label")
 
   const checkbox  = document.createElement("input")
-
+  checkbox.addEventListener("change", () =>{
+      saveTasks()    
+  })
   checkbox.type = "checkbox"
+  checkbox.checked = task.completed
   label.append(checkbox, task.title)
 
   item.append(label)
@@ -41,3 +53,13 @@ function addListItem(task: Task){
 }
 
 
+function saveTasks(){
+  localStorage.setItem("TASKS",JSON.stringify(tasks))
+}
+
+function loadTasks(): Task[] {
+  const taskJson = localStorage.getItem("TASKS")
+  if(taskJson == null ) return []
+  return JSON.parse(taskJson)
+  
+}
