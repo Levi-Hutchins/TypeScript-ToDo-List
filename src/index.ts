@@ -1,18 +1,22 @@
 import {v4 as uuidV4} from "uuid"
 
 //console.log(uuidV4())
+// Task object for every new to do task
 type Task = { 
   id: string,
   title: string,
   completed: false,
   createdAt: Date
 }
+
+// get each element while also defining its HTMlL type
 const list = document.querySelector<HTMLUListElement>("#list")
 const form = document.querySelector<HTMLFormElement>("#new-task")
 const input = document.querySelector<HTMLInputElement>("#task-title")
 
-const tasks: Task[] = loadTasks()
+const tasks: Task[] = loadTasks() // Populate the task array of task objects
 
+// Iterate through each task and call addListItem function
 tasks.forEach(addListItem)
 
 
